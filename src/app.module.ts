@@ -31,9 +31,10 @@ import { ExamsModule } from './exams/exams.module';
       synchronize: true,
       retryAttempts: 10,
       retryDelay: 5000,
-      connectTimeout: 60000,
-      acquireTimeout: 60000,
-      timeout: 60000,
+      extra: {
+        connectionLimit: 10,
+        connectTimeout: 60000,
+      },
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
