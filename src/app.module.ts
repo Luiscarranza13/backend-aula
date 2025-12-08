@@ -29,8 +29,11 @@ import { ExamsModule } from './exams/exams.module';
       database: process.env.DB_DATABASE || 'aula_virtual_nest',
       autoLoadEntities: true,
       synchronize: true,
-      retryAttempts: 3,
-      retryDelay: 3000,
+      retryAttempts: 10,
+      retryDelay: 5000,
+      connectTimeout: 60000,
+      acquireTimeout: 60000,
+      timeout: 60000,
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
