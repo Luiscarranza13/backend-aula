@@ -19,6 +19,14 @@ export class AuthService {
 
     const passwordToCheck = loginDto.password || loginDto.contraseña;
     
+    if (!passwordToCheck) {
+      throw new UnauthorizedException('La contraseña es requerida');
+    }
+
+    if (passwordToCheck.length < 6) {
+      throw new UnauthorizedException('La contraseña debe tener al menos 6 caracteres');
+    }
+    
     const isPasswordValid = await bcrypt.compare(
       passwordToCheck,
       user.contraseña,
