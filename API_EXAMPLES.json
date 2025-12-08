@@ -1,0 +1,66 @@
+{
+  "USUARIOS": {
+    "POST /users - Crear usuario": {
+      "nombre": "Juan Pérez",
+      "email": "juan@example.com",
+      "contraseña": "password123",
+      "rol": "docente"
+    },
+    "POST /users - Crear estudiante": {
+      "nombre": "María García",
+      "email": "maria@example.com",
+      "contraseña": "password123",
+      "rol": "estudiante"
+    },
+    "PATCH /users/1 - Actualizar usuario": {
+      "nombre": "Juan Pérez Actualizado"
+    }
+  },
+  "AUTENTICACION": {
+    "POST /auth/login": {
+      "email": "juan@example.com",
+      "contraseña": "password123"
+    }
+  },
+  "CURSOS": {
+    "POST /courses - Crear curso": {
+      "titulo": "Matemáticas Avanzadas",
+      "descripcion": "Curso de cálculo diferencial e integral",
+      "grado": "11",
+      "seccion": "A",
+      "docente_id": 1
+    },
+    "PATCH /courses/1 - Actualizar curso": {
+      "titulo": "Matemáticas Avanzadas II"
+    }
+  },
+  "TAREAS": {
+    "POST /tasks - Crear tarea": {
+      "titulo": "Resolver ejercicios de derivadas",
+      "descripcion": "Completar los ejercicios del 1 al 20",
+      "fecha_entrega": "2025-12-15T23:59:00",
+      "curso_id": 1,
+      "creado_por": 1
+    }
+  },
+  "RECURSOS": {
+    "POST /resources - Crear recurso": {
+      "nombre_archivo": "Guía de Derivadas.pdf",
+      "url": "https://example.com/guia-derivadas.pdf",
+      "curso_id": 1
+    }
+  },
+  "FOROS": {
+    "POST /forums - Crear foro": {
+      "titulo": "Dudas sobre el examen final",
+      "curso_id": 1
+    }
+  },
+  "MENSAJES": {
+    "POST /messages - Crear mensaje": {
+      "contenido": "¿Alguien puede explicar el teorema fundamental del cálculo?",
+      "foro_id": 1,
+      "usuario_id": 2
+    }
+  }
+}
