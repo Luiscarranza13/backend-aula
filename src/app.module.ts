@@ -17,6 +17,10 @@ import { SubmissionsModule } from './submissions/submissions.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ChatModule } from './chat/chat.module';
 import { ExamsModule } from './exams/exams.module';
+import { AttendanceModule } from './attendance/attendance.module';
+import { AnnouncementsModule } from './announcements/announcements.module';
+import { GroupsModule } from './groups/groups.module';
+import { BadgesModule } from './badges/badges.module';
 
 @Module({
   imports: [
@@ -54,6 +58,10 @@ import { ExamsModule } from './exams/exams.module';
     NotificationsModule,
     ChatModule,
     ExamsModule,
+    AttendanceModule,
+    AnnouncementsModule,
+    GroupsModule,
+    BadgesModule,
   ],
   controllers: [AppController],
   providers: [],
