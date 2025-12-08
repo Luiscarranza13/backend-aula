@@ -2,6 +2,8 @@ import { Injectable, NotFoundException, ConflictException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -11,21 +13,28 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: any) {
+  async create(createUserDto: CreateUserDto) {
     try {
       // Verificar si es el primer usuario
       const userCount = await this.usersRepository.count();
       
-      // Si no hay usuarios, el primero será admin
-      const rol = userCount === 0 ? 'admin' : (createUserDto.rol || 'estudiante');
+      // REGLA: Solo el primer usuario es admin, el resto son estudiantes
+      // El rol NO puede ser especificado en el registro público
+      const rol = userCount === 0 ? 'admin' : 'estudiante';
       
       const hashedPassword = await bcrypt.hash(createUserDto.contraseña, 10);
       const user = this.usersRepository.create({
-        ...createUserDto,
-        rol,
+        nombre: createUserDto.nombre,
+        email: createUserDto.email,
         contraseña: hashedPassword,
+        rol, // Asignado automáticamente, no del DTO
       });
-      return await this.usersRepository.save(user);
+      
+      const savedUser = await this.usersRepository.save(user);
+      
+      // No devolver la contraseña
+      const { contraseña, ...result } = savedUser;
+      return result;
     } catch (error: any) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('El email ya está registrado');
@@ -60,15 +69,21 @@ export class UsersService {
     return await this.usersRepository.findOne({ where: { email } });
   }
 
-  async update(id: number, updateUserDto: any) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
     
+    // Si se actualiza la contraseña, hashearla
     if (updateUserDto.contraseña) {
       updateUserDto.contraseña = await bcrypt.hash(updateUserDto.contraseña, 10);
     }
 
+    // Actualizar campos permitidos
     Object.assign(user, updateUserDto);
-    return await this.usersRepository.save(user);
+    const updatedUser = await this.usersRepository.save(user);
+    
+    // No devolver la contraseña
+    const { contraseña, ...result } = updatedUser;
+    return result;
   }
 
   async remove(id: number) {
