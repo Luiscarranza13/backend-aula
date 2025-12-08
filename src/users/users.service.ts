@@ -13,9 +13,16 @@ export class UsersService {
 
   async create(createUserDto: any) {
     try {
+      // Verificar si es el primer usuario
+      const userCount = await this.usersRepository.count();
+      
+      // Si no hay usuarios, el primero será admin
+      const rol = userCount === 0 ? 'admin' : (createUserDto.rol || 'estudiante');
+      
       const hashedPassword = await bcrypt.hash(createUserDto.contraseña, 10);
       const user = this.usersRepository.create({
         ...createUserDto,
+        rol,
         contraseña: hashedPassword,
       });
       return await this.usersRepository.save(user);
