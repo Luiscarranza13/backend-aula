@@ -12,11 +12,13 @@
     "format": "prettier --write \"**/*.{ts,js}\"",
     "prebuild": "rimraf dist",
     "build": "tsc",
+    "prestart": "node healthcheck.js",
     "start": "node dist/main.js",
     "start:dev": "ts-node-dev --respawn src/main.ts",
     "start:ts": "ts-node src/main.ts",
     "start:prod": "node dist/main.js",
     "check:db": "node check-mysql.js",
+    "healthcheck": "node healthcheck.js",
     "test": "jest",
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json"

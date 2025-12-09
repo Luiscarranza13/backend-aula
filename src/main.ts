@@ -4,40 +4,55 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    bufferLogs: true,
-  });
+  try {
+    console.log('🚀 Iniciando Aula Virtual Backend...');
+    console.log(`📦 Entorno: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🗄️  Base de datos: ${process.env.DB_HOST}:${process.env.DB_PORT}`);
 
-  // Validaciones globales
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: false,
-      transform: true,
-    }),
-  );
+    const app = await NestFactory.create(AppModule, {
+      bufferLogs: true,
+      logger: ['error', 'warn', 'log'],
+    });
 
-  // CORS - Permitir frontend en desarrollo y producción
-  app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://aulavirtual-luis.netlify.app',
-      /\.netlify\.app$/,
-      /\.vercel\.app$/,
-    ],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    credentials: true,
-  });
+    // Validaciones globales
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: false,
+        transform: true,
+      }),
+    );
 
-  // Puerto - Railway provee PORT automáticamente
-  const port = process.env.PORT || 3001;
+    // CORS - Permitir frontend en desarrollo y producción
+    app.enableCors({
+      origin: [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'https://aulavirtual-luis.netlify.app',
+        /\.netlify\.app$/,
+        /\.vercel\.app$/,
+      ],
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+      credentials: true,
+    });
 
-  await app.listen(port, '0.0.0.0');
+    // Puerto - Railway provee PORT automáticamente
+    const port = process.env.PORT || 3001;
 
-  console.log(`🚀 Servidor NestJS corriendo en puerto ${port}`);
-  console.log(`📦 Entorno: ${process.env.NODE_ENV || 'development'}`);
+    await app.listen(port, '0.0.0.0');
+
+    console.log(`✅ Servidor corriendo en puerto ${port}`);
+    console.log(`🌐 URL: http://0.0.0.0:${port}`);
+    console.log(`📡 Health check: http://0.0.0.0:${port}/`);
+  } catch (error) {
+    console.error('❌ Error fatal al iniciar el servidor:', error);
+    console.error('Stack trace:', error.stack);
+    process.exit(1);
+  }
 }
 
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('❌ Error no capturado en bootstrap:', error);
+  process.exit(1);
+});

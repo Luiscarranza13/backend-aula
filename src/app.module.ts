@@ -35,10 +35,13 @@ import { BadgesModule } from './badges/badges.module';
       autoLoadEntities: true,
       synchronize: true,
       retryAttempts: 10,
-      retryDelay: 5000,
+      retryDelay: 3000,
+      logging: process.env.NODE_ENV === 'development',
       extra: {
         connectionLimit: 10,
-        connectTimeout: 60000,
+        connectTimeout: 30000,
+        waitForConnections: true,
+        queueLimit: 0,
       },
     }),
     ServeStaticModule.forRoot({
