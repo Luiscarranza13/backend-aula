@@ -1,32 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Usuario } from '../users/usuario.entity';
-import { Curso } from '../courses/curso.entity';
-import { Inscripcion } from '../enrollments/inscripcion.entity';
-import { Tarea } from '../tasks/tarea.entity';
-import { Recurso } from '../resources/recurso.entity';
-import { Foro } from '../forums/foro.entity';
-import { MensajeForo } from '../forums/mensaje-foro.entity';
+import { User } from '../users/user.entity';
+import { Course } from '../courses/course.entity';
+import { Enrollment } from '../enrollments/enrollment.entity';
+import { Task } from '../tasks/task.entity';
+import { Resource } from '../resources/resource.entity';
+import { Forum } from '../forums/forum.entity';
+import { ForumMessage } from '../forums/forum-message.entity';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class SeedService {
   constructor(
-    @InjectRepository(Usuario)
-    private usuariosRepository: Repository<Usuario>,
-    @InjectRepository(Curso)
-    private cursosRepository: Repository<Curso>,
-    @InjectRepository(Inscripcion)
-    private inscripcionesRepository: Repository<Inscripcion>,
-    @InjectRepository(Tarea)
-    private tareasRepository: Repository<Tarea>,
-    @InjectRepository(Recurso)
-    private recursosRepository: Repository<Recurso>,
-    @InjectRepository(Foro)
-    private forosRepository: Repository<Foro>,
-    @InjectRepository(MensajeForo)
-    private mensajesForoRepository: Repository<MensajeForo>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+    @InjectRepository(Course)
+    private coursesRepository: Repository<Course>,
+    @InjectRepository(Enrollment)
+    private enrollmentsRepository: Repository<Enrollment>,
+    @InjectRepository(Task)
+    private tasksRepository: Repository<Task>,
+    @InjectRepository(Resource)
+    private resourcesRepository: Repository<Resource>,
+    @InjectRepository(Forum)
+    private forumsRepository: Repository<Forum>,
+    @InjectRepository(ForumMessage)
+    private forumMessagesRepository: Repository<ForumMessage>,
   ) {}
 
   async runCompleteSeed() {
@@ -37,7 +37,6 @@ export class SeedService {
       tareas: 0,
       recursos: 0,
       foros: 0,
-      mensajes: 0,
     };
 
     try {
@@ -60,31 +59,31 @@ export class SeedService {
       ];
 
       for (const userData of usuarios) {
-        const exists = await this.usuariosRepository.findOne({ where: { email: userData.email } });
+        const exists = await this.usersRepository.findOne({ where: { email: userData.email } });
         if (!exists) {
-          await this.usuariosRepository.save(userData);
+          await this.usersRepository.save(userData);
           results.usuarios++;
         }
       }
 
       // 2. CURSOS
       const cursosData = [
-        { nombre: 'Matemáticas Avanzadas', descripcion: 'Cálculo diferencial e integral, álgebra lineal y ecuaciones diferenciales', profesorId: 2, creditos: 4 },
-        { nombre: 'Programación Web Full Stack', descripcion: 'Desarrollo web moderno con React, Node.js, Express y MongoDB', profesorId: 2, creditos: 5 },
-        { nombre: 'Inteligencia Artificial', descripcion: 'Machine Learning, Deep Learning y aplicaciones prácticas de IA', profesorId: 3, creditos: 4 },
-        { nombre: 'Base de Datos Avanzadas', descripcion: 'SQL, NoSQL, optimización de consultas y diseño de bases de datos', profesorId: 3, creditos: 4 },
-        { nombre: 'Desarrollo Móvil', descripcion: 'Creación de apps nativas con React Native y Flutter', profesorId: 4, creditos: 4 },
-        { nombre: 'Ciberseguridad', descripcion: 'Seguridad informática, ethical hacking y protección de sistemas', profesorId: 4, creditos: 3 },
-        { nombre: 'Cloud Computing', descripcion: 'AWS, Azure, Google Cloud y arquitecturas en la nube', profesorId: 2, creditos: 4 },
-        { nombre: 'DevOps y CI/CD', descripcion: 'Docker, Kubernetes, Jenkins y automatización de despliegues', profesorId: 3, creditos: 3 },
-        { nombre: 'Diseño UX/UI', descripcion: 'Principios de diseño, Figma, prototipado y experiencia de usuario', profesorId: 4, creditos: 3 },
-        { nombre: 'Blockchain y Criptomonedas', descripcion: 'Tecnología blockchain, smart contracts y desarrollo de DApps', profesorId: 2, creditos: 4 },
+        { titulo: 'Matemáticas Avanzadas', descripcion: 'Cálculo diferencial e integral, álgebra lineal y ecuaciones diferenciales', docenteId: 2 },
+        { titulo: 'Programación Web Full Stack', descripcion: 'Desarrollo web moderno con React, Node.js, Express y MongoDB', docenteId: 2 },
+        { titulo: 'Inteligencia Artificial', descripcion: 'Machine Learning, Deep Learning y aplicaciones prácticas de IA', docenteId: 3 },
+        { titulo: 'Base de Datos Avanzadas', descripcion: 'SQL, NoSQL, optimización de consultas y diseño de bases de datos', docenteId: 3 },
+        { titulo: 'Desarrollo Móvil', descripcion: 'Creación de apps nativas con React Native y Flutter', docenteId: 4 },
+        { titulo: 'Ciberseguridad', descripcion: 'Seguridad informática, ethical hacking y protección de sistemas', docenteId: 4 },
+        { titulo: 'Cloud Computing', descripcion: 'AWS, Azure, Google Cloud y arquitecturas en la nube', docenteId: 2 },
+        { titulo: 'DevOps y CI/CD', descripcion: 'Docker, Kubernetes, Jenkins y automatización de despliegues', docenteId: 3 },
+        { titulo: 'Diseño UX/UI', descripcion: 'Principios de diseño, Figma, prototipado y experiencia de usuario', docenteId: 4 },
+        { titulo: 'Blockchain y Criptomonedas', descripcion: 'Tecnología blockchain, smart contracts y desarrollo de DApps', docenteId: 2 },
       ];
 
       for (const cursoData of cursosData) {
-        const exists = await this.cursosRepository.findOne({ where: { nombre: cursoData.nombre } });
+        const exists = await this.coursesRepository.findOne({ where: { titulo: cursoData.titulo } });
         if (!exists) {
-          await this.cursosRepository.save(cursoData);
+          await this.coursesRepository.save(cursoData);
           results.cursos++;
         }
       }
@@ -92,11 +91,11 @@ export class SeedService {
       // 3. INSCRIPCIONES
       for (let cursoId = 1; cursoId <= 10; cursoId++) {
         for (let estudianteId = 5; estudianteId <= 12; estudianteId++) {
-          const exists = await this.inscripcionesRepository.findOne({
+          const exists = await this.enrollmentsRepository.findOne({
             where: { estudianteId, cursoId }
           });
           if (!exists) {
-            await this.inscripcionesRepository.save({ estudianteId, cursoId });
+            await this.enrollmentsRepository.save({ estudianteId, cursoId });
             results.inscripciones++;
           }
         }
@@ -115,11 +114,11 @@ export class SeedService {
       ];
 
       for (const tareaData of tareasData) {
-        const exists = await this.tareasRepository.findOne({
+        const exists = await this.tasksRepository.findOne({
           where: { titulo: tareaData.titulo, cursoId: tareaData.cursoId }
         });
         if (!exists) {
-          await this.tareasRepository.save(tareaData);
+          await this.tasksRepository.save(tareaData);
           results.tareas++;
         }
       }
@@ -133,11 +132,11 @@ export class SeedService {
       ];
 
       for (const recursoData of recursosData) {
-        const exists = await this.recursosRepository.findOne({
+        const exists = await this.resourcesRepository.findOne({
           where: { titulo: recursoData.titulo, cursoId: recursoData.cursoId }
         });
         if (!exists) {
-          await this.recursosRepository.save(recursoData);
+          await this.resourcesRepository.save(recursoData);
           results.recursos++;
         }
       }
@@ -149,11 +148,11 @@ export class SeedService {
       ];
 
       for (const foroData of forosData) {
-        const exists = await this.forosRepository.findOne({
+        const exists = await this.forumsRepository.findOne({
           where: { titulo: foroData.titulo, cursoId: foroData.cursoId }
         });
         if (!exists) {
-          await this.forosRepository.save(foroData);
+          await this.forumsRepository.save(foroData);
           results.foros++;
         }
       }
