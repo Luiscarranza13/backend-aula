@@ -21,7 +21,7 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { GroupsModule } from './groups/groups.module';
 import { BadgesModule } from './badges/badges.module';
-import { SeedModule } from './seed/seed.module';
+// import { SeedModule } from './seed/seed.module'; // Temporalmente deshabilitado
 
 @Module({
   imports: [
@@ -63,7 +63,7 @@ import { SeedModule } from './seed/seed.module';
     AnnouncementsModule,
     GroupsModule,
     BadgesModule,
-    SeedModule,
+    // SeedModule, // Temporalmente deshabilitado
   ],
   controllers: [AppController],
   providers: [],
