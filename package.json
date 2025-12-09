@@ -12,7 +12,6 @@
     "format": "prettier --write \"**/*.{ts,js}\"",
     "prebuild": "rimraf dist",
     "build": "tsc",
-    "prestart": "node healthcheck.js",
     "start": "node dist/main.js",
     "start:dev": "ts-node-dev --respawn src/main.ts",
     "start:ts": "ts-node src/main.ts",

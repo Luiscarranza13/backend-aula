@@ -8,6 +8,12 @@ async function bootstrap() {
     console.log('🚀 Iniciando Aula Virtual Backend...');
     console.log(`📦 Entorno: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🗄️  Base de datos: ${process.env.DB_HOST}:${process.env.DB_PORT}`);
+    
+    // Asegurar que JWT_SECRET exista
+    if (!process.env.JWT_SECRET) {
+      console.log('⚠️  JWT_SECRET no definido, usando valor por defecto');
+      process.env.JWT_SECRET = 'aula-virtual-secret-key-2024-default';
+    }
 
     const app = await NestFactory.create(AppModule, {
       bufferLogs: true,
