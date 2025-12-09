@@ -21,6 +21,7 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { GroupsModule } from './groups/groups.module';
 import { BadgesModule } from './badges/badges.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { BadgesModule } from './badges/badges.module';
     AnnouncementsModule,
     GroupsModule,
     BadgesModule,
+    SeedModule,
   ],
   controllers: [AppController],
   providers: [],

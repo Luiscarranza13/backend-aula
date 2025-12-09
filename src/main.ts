@@ -22,7 +22,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      // Agregar tu dominio de Netlify aquí
+      'https://aulavirtual-luis.netlify.app',
       /\.netlify\.app$/,
       /\.vercel\.app$/,
     ],
