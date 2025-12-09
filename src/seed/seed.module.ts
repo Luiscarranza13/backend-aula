@@ -8,7 +8,6 @@ import { Enrollment } from '../enrollments/enrollment.entity';
 import { Task } from '../tasks/task.entity';
 import { Resource } from '../resources/resource.entity';
 import { Forum } from '../forums/forum.entity';
-import { ForumMessage } from '../forums/forum-message.entity';
 
 @Module({
   imports: [
@@ -19,7 +18,6 @@ import { ForumMessage } from '../forums/forum-message.entity';
       Task,
       Resource,
       Forum,
-      ForumMessage,
     ]),
   ],
   controllers: [SeedController],
