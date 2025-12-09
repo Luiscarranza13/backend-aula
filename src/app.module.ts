@@ -27,11 +27,11 @@ import { BadgesModule } from './badges/badges.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '3306'),
-      username: process.env.DB_USERNAME || 'root',
-      password: process.env.DB_PASSWORD || '',
-      database: process.env.DB_DATABASE || 'aula_virtual_nest',
+      host: process.env.MYSQLHOST || process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.MYSQLPORT || process.env.DB_PORT || '3306'),
+      username: process.env.MYSQLUSER || process.env.DB_USERNAME || 'root',
+      password: process.env.MYSQLPASSWORD || process.env.DB_PASSWORD || '',
+      database: process.env.MYSQLDATABASE || process.env.DB_DATABASE || 'railway',
       autoLoadEntities: true,
       synchronize: true,
       retryAttempts: 10,

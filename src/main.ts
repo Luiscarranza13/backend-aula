@@ -7,7 +7,9 @@ async function bootstrap() {
   try {
     console.log('🚀 Iniciando Aula Virtual Backend...');
     console.log(`📦 Entorno: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🗄️  Base de datos: ${process.env.DB_HOST}:${process.env.DB_PORT}`);
+    const dbHost = process.env.MYSQLHOST || process.env.DB_HOST || 'localhost';
+    const dbPort = process.env.MYSQLPORT || process.env.DB_PORT || '3306';
+    console.log(`🗄️  Base de datos: ${dbHost}:${dbPort}`);
     
     // Asegurar que JWT_SECRET exista
     if (!process.env.JWT_SECRET) {
